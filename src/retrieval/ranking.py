@@ -1,6 +1,6 @@
 from scipy.sparse import csr_matrix
 
-from .vectorizer import vectorize_sparse
+from src.preprocessing.vectorizer import vectorize_sparse
 from .similarity import cosine_similarity_sparse
 
 def ranking(query: str, vocab_index: dict[str, int], doc_term_matrix: csr_matrix) -> list[tuple[int, float]]:

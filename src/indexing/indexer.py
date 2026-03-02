@@ -4,9 +4,9 @@ from pathlib import Path
 from dataclasses import dataclass
 from scipy.sparse import csr_matrix, save_npz, load_npz
 
-from src.corpus import create_corpus
-from src.vocabulary import create_vocabulary
-from src.doc_term_matrix import create_doc_term_matrix_sparse
+from .corpus import create_corpus
+from .vocabulary import create_vocabulary
+from .doc_term_matrix import create_doc_term_matrix_sparse
 
 @dataclass
 class Index:
@@ -64,47 +64,7 @@ class Indexer:
             doc_term_matrix=doc_term_matrix
         )
     
-if __name__ == "__main__":
-    data = {
-            "passages": [
-                {
-                    "passage_text": [
-                        "machine learning is fun",
-                        "deep learning is powerful"
-                    ]
-                },
-                {
-                    "passage_text": [
-                        "banking and finance system",
-                        "central bank regulation"
-                    ]
-                }
-            ]
-        }
 
-    dataset = pd.DataFrame(data)
-
-    # 1. Build index
-    index = Indexer.build(dataset)
-
-    print("Index built")
-    print(f"- Corpus size: {len(index.corpus)}")
-    print(f"- Vocabulary size: {len(index.vocabulary)}")
-    print(f"- Doc-term matrix shape: {index.doc_term_matrix.shape}")
-
-    test_path = Path("test_index")
-
-    # 2. Save index
-    Indexer.save(index, test_path)
-    print("Index saved")
-
-    # 3. Load index
-    loaded_index = Indexer.load(test_path)
-    print("Index loaded")
-
-    # 4. Cleanup
-    import shutil
-    shutil.rmtree(test_path)
 
 
     

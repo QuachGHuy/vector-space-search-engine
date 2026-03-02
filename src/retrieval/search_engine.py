@@ -1,6 +1,6 @@
 from scipy.sparse import csr_matrix
 
-from .vectorizer import vectorize_sparse
+from src.preprocessing.vectorizer import vectorize_sparse
 from .similarity import cosine_similarity_sparse
 
 class SearchEngine:
@@ -47,25 +47,3 @@ class SearchEngine:
         results.sort(reverse=True, key=lambda x: x[0])
         
         return results[:top_k]
-    
-if __name__ == "__main__":
-    s_corpus = [
-        "machine learning is cool",
-        "deep learning and machine vision",
-        "banking system and finance"
-    ]
-
-    from .vocabulary import create_vocabulary
-
-    s_vocabulary = create_vocabulary(s_corpus)
-
-    from .doc_term_matrix import create_doc_term_matrix_sparse
-
-    s_doc_term_matrix = create_doc_term_matrix_sparse(s_corpus, s_vocabulary)
-
-    engine = SearchEngine(s_corpus, s_vocabulary, s_doc_term_matrix)
-
-    results = engine.search("machine learning", top_k=2)
-
-    for score, doc in results:
-        print(f"{score:.4f} | {doc}")
