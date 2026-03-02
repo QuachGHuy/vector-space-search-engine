@@ -2,7 +2,7 @@ import numpy as np
 from collections import Counter
 from scipy.sparse import lil_matrix, csr_matrix
 
-from .tokenizer import tokenize
+from src.preprocessing.tokenizer import tokenize
 
 def create_doc_term_matrix_sparse(
         corpus: list[str], 

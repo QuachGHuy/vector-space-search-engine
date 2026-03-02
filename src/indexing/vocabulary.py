@@ -1,4 +1,4 @@
-from .tokenizer import tokenize
+from src.preprocessing.tokenizer import tokenize
 
 def create_vocabulary(corpus: list[str]) -> list[str]:
     vocabulary = set()
