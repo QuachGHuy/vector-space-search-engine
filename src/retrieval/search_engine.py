@@ -15,10 +15,10 @@ class SearchEngine:
         """
         self.corpus = corpus
         self.vocabulary = vocabulary
-        self.doc_term_matrix = doc_term_matrix
-
         self.vocab_index = {w:i for i, w in enumerate(vocabulary)}
         self.vocab_size = len(vocabulary)
+
+        self.doc_term_matrix = doc_term_matrix
 
     def _vectorize_query(self, query: str) -> csr_matrix:
         return vectorize_sparse(query, self.vocab_index, self.vocab_size)
