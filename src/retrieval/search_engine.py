@@ -9,7 +9,7 @@ class SearchEngine:
         self,
         corpus: list[str],
         vocabulary: list[str],
-        doc_term_matrix: csr_matrix
+        doc_term_matrix: csr_matrix,
     ):
         """
         Initialize search engine with pre-build index.
@@ -18,16 +18,15 @@ class SearchEngine:
         self.vocabulary = vocabulary
         self.vocab_index = {w:i for i, w in enumerate(vocabulary)}
         self.vocab_size = len(vocabulary)
-
         self.doc_term_matrix = doc_term_matrix
 
     def _vectorize_query(self, query: str) -> csr_matrix:
         return vectorize_sparse(query, self.vocab_index, self.vocab_size)
     
-    def _score(self, query_vec: csr_matrix, doc_vec: csr_matrix) -> np.ndarray:
-        return cosine_similarity_sparse(query_vec, doc_vec)
+    def _score(self, query_vec: csr_matrix, doc_matrix: csr_matrix) -> np.ndarray:
+        return cosine_similarity_sparse(query_vec, doc_matrix)
     
-    def search(self, query: str, top_k: int = 5) -> list[tuple[float, str]]:
+    def search(self, query: str, top_k: int) -> list[tuple[float, str]]:
         """
         Search top-k most relevant documents.
         Return: [(score, document_text)]
@@ -38,6 +37,9 @@ class SearchEngine:
             raise ValueError("doc_term_matrix must not be None")    
 
         scores = self._score(query_vec, self.doc_term_matrix)
+        
+        if len(scores) == 0:    
+            return []
         
         k = min(top_k, len(scores))
 
