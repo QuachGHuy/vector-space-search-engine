@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Request, Query, HTTPException
-from .schemas import SearchResultItem, SearchResponse
+from ..schemas.search import SearchResultItem, SearchResponse
 
 from src.core.settings import settings
 

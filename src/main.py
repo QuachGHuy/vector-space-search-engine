@@ -1,7 +1,14 @@
 import uvicorn
-from src.api.app import create_app
+from fastapi import FastAPI
+from src.api.lifespan import lifespan
+from src.api.routers.search import router as search_router
 
-app = create_app()
+app = FastAPI(
+    title="Vector Space Search Engine",
+    lifespan=lifespan
+)
+
+app.include_router(search_router)
 
 if __name__ == "__main__":
     uvicorn.run("src.main:app", host="0.0.0.0", port=8000, reload=True)
