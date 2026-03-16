@@ -1,8 +1,11 @@
+import structlog
 import numpy as np
 from scipy.sparse import csr_matrix
 
 from src.preprocessing.vectorizer import vectorize_sparse
 from .similarity import cosine_similarity_sparse
+
+logger = structlog.get_logger()
 
 class SearchEngine:
     def __init__(
@@ -31,16 +34,22 @@ class SearchEngine:
         Search top-k most relevant documents.
         Return: [(score, document_text)]
         """
+        logger.info("search_started", query_text=str(query))
+        
+        logger.debug("vectorizing_query")
         query_vec = self._vectorize_query(query)
 
-        if self.doc_term_matrix is None:
-            raise ValueError("doc_term_matrix must not be None")    
+        if query_vec.nnz == 0:
+            logger.warning(
+                "query_out_of_vocabulary",
+                query_text=str(query)
+            )
+            return []  
 
+        logger.debug("scoring_query")
         scores = self._score(query_vec, self.doc_term_matrix)
         
-        if len(scores) == 0:    
-            return []
-        
+        logger.debug("sorting_score_with_top_k", top_k=top_k)
         k = min(top_k, len(scores))
 
         top_indices = np.argpartition(scores, - k)[- k:]
@@ -50,4 +59,9 @@ class SearchEngine:
             (float(scores[i]), self.corpus[i]) 
             for i in top_indices if scores[i] > 0
         ]
+
+        logger.info(
+            "search_completed",
+            results_found=len(results)
+        )
         return results
