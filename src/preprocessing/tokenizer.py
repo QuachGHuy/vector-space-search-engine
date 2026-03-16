@@ -20,6 +20,7 @@ EMOJI_PATTERN = re.compile(
 )
 
 def tokenize(text: str) -> list[str]:
+
     if not text:
         return []
     
