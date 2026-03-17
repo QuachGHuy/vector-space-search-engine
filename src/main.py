@@ -11,7 +11,7 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-app.add_middleware(StructureLoggingMiddleware)
+app.add_middleware(StructuredLoggingMiddleware)
 
 app.include_router(search_router)
 

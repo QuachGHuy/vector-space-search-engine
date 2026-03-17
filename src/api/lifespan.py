@@ -1,7 +1,6 @@
 import structlog
 
 from contextlib import asynccontextmanager
-from pathlib import Path
 from fastapi import FastAPI
 import pandas as pd
 
@@ -31,7 +30,7 @@ async def lifespan(app: FastAPI):
         if not settings.RAW_DATA_PATH.exists():
             logger.critical(
                 "raw_data_not_found",
-                message="Cannot start due to misssing Raw Data!",
+                message="Cannot start due to missing Raw Data!",
                 raw_data_path=str(settings.RAW_DATA_PATH),
             )
 
