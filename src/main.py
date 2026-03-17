@@ -2,7 +2,7 @@ import uvicorn
 from fastapi import FastAPI
 
 from src.api.lifespan import lifespan
-from core.middlewares import StructuredLoggingMiddleware
+from src.core.middlewares import StructuredLoggingMiddleware
 from src.api.routers.search import router as search_router
 
 

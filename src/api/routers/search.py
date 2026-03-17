@@ -16,7 +16,7 @@ def search(
     top_k: int = Query(default=settings.DEFAULT_TOP_K, ge=1, le=50)
 ):
     
-    logger.info("search_endpoint_called", query_text=q, top_k=top_k)
+    logger.debug("search_endpoint_called", query_text=q, top_k=top_k)
 
     engine = getattr(request.app.state, "search_engine", None)
     if engine is None:
@@ -32,8 +32,6 @@ def search(
     except Exception as e:
         logger.exception("search_engine_crashed", error_msg=str(e), query_text=q)
         raise HTTPException(500, "Internal search error")
-
-    logger.info("search_endpoint_success", found_items=len(results))
     
     return SearchResponse(
         query=q,
