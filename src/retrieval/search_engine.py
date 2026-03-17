@@ -34,9 +34,7 @@ class SearchEngine:
         Search top-k most relevant documents.
         Return: [(score, document_text)]
         """
-        logger.debug("search_started", query_text=str(query))
-        
-        logger.debug("vectorizing_query")
+        logger.debug("search_started", query_text=query)
         query_vec = self._vectorize_query(query)
 
         if query_vec.nnz == 0:
@@ -46,10 +44,8 @@ class SearchEngine:
             )
             return []  
 
-        logger.debug("scoring_query")
         scores = self._score(query_vec, self.doc_term_matrix)
         
-        logger.debug("sorting_score_with_top_k", top_k=top_k)
         k = min(top_k, len(scores))
 
         top_indices = np.argpartition(scores, - k)[- k:]
@@ -60,7 +56,7 @@ class SearchEngine:
             for i in top_indices if scores[i] > 0
         ]
 
-        logger.info(
+        logger.debug(
             "search_completed",
             results_found=len(results)
         )
