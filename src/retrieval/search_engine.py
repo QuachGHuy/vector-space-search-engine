@@ -34,7 +34,7 @@ class SearchEngine:
         Search top-k most relevant documents.
         Return: [(score, document_text)]
         """
-        logger.info("search_started", query_text=str(query))
+        logger.debug("search_started", query_text=str(query))
         
         logger.debug("vectorizing_query")
         query_vec = self._vectorize_query(query)
@@ -42,7 +42,7 @@ class SearchEngine:
         if query_vec.nnz == 0:
             logger.warning(
                 "query_out_of_vocabulary",
-                query_text=str(query)
+                query_text=query
             )
             return []  
 
